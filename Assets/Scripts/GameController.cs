@@ -37,6 +37,27 @@ public class GameController : MonoBehaviour
     private GameObject tempObject;
     private Mover mover;
     private float speedIncrement;
+    public int speedIncrementsEveryNthWave;
+    public int waveWaitDecrementsEveryNthWave;
+    public float waveWaitDecrementStep; // Step for decrement of the delay before the next wave
+    public float playerSpeedLimit; // Player speed value that causes significant speed increment decrease
+    public float speedIncrementStepStart; // Step for speed increment until Player speed reaches playerSpeedLimit
+    public float speedIncrementStepEnd; // Step for speed increment after Player speed reaches playerSpeedLimit
+    public float playerSpeedStopLimit; // Player speed value that causes speed increment procedure to stop
+    public float spawnWaitLimit; // Limit value that causes spawn wait decrement procedure to stop
+    private float spawnWaitStepStart;
+    private float spawnWaitStepEnd;
+
+    // Fire rate increment
+    private WeaponController weapon;
+    private float fireRateIncrement;
+    private float enemyFireDelayDecrement;
+    public float fireRateIncrementStepStart; // Step for fire rate increment until Player speed reaches playerSpeedLimit
+    public float fireRateIncrementStepEnd; // Step for fire rate increment after Player speed reaches playerSpeedLimit
+    public float enemyFireRateIncrementCoef; // Coefficient for enemy fire rate increment in comparison to the Player's one
+    public float enemyFireDelayDecrementStepStart; // Step for enemy fire delay decrement until Player speed reaches playerSpeedLimit
+    public float enemyFireDelayDecrementStepEnd; // Step for enemy fire delay decrement after Player speed reaches playerSpeedLimit
+
     private void Start()
     {
         gameOver = false;
@@ -62,6 +83,13 @@ public class GameController : MonoBehaviour
         waveCount = 0;
         // speedIncrement initialization
         speedIncrement = 0;
+        // spawnWaitStep initialization
+        spawnWaitStepStart = speedIncrementStepStart * 0.05f;
+        spawnWaitStepEnd = speedIncrementStepEnd * 0.05f;
+        // fireRateIncrement initialization
+        fireRateIncrement = 0;
+        // enemyFireDelayDecrement initialization
+        enemyFireDelayDecrement = 0;
 
         UpdateScore();
         StartCoroutine (SpawnWaves());
@@ -69,8 +97,6 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(scoreText.rectTransform.position);
-        //Debug.Log(Screen.width + "x" + Screen.height);
         // Screen resolution change UI fix
         if (Screen.width != PrevScreenWidth)
         {
@@ -101,21 +127,41 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            // TODO: Increment the bolt speed and fire rate for both player and enemies
+            // TODO: Increment the bolt speed for both player and enemies
             // TODO: Intro with game description, rules and controls
+            // TODO: Difficulty levels
             
             // waveCount increment
             waveCount++;
-            // Movement speed increment every 4th wave
-            if (waveCount % 4 == 0)
+            // Movement speed increment every speedIncrementsEveryNthWave-th wave IF stop limit of Player speed is not reached
+            if ((player.speed < playerSpeedStopLimit) && (waveCount % speedIncrementsEveryNthWave == 0))
             {
-                speedIncrement += 0.5f;
-                // Player movement speed increment
-                player.speed += 0.5f;
-                // Decrease the delay before the next hazard every 8th wave until it reaches 0.05
-                if ((spawnWait > 0.11f) && (waveCount % 8 == 0)) // 0.11f is used to avoid comparison float to 0.1
+                if (player.speed < playerSpeedLimit)
                 {
-                    spawnWait -= 0.05f; // 0.05s for 1 speed unit
+                    speedIncrement += speedIncrementStepStart;
+                    fireRateIncrement += fireRateIncrementStepStart * enemyFireRateIncrementCoef;
+                    enemyFireDelayDecrement += enemyFireDelayDecrementStepStart;
+                    // Player movement speed increment
+                    player.speed += speedIncrementStepStart;
+                    // Player fire rate increment
+                    player.fireRate -= fireRateIncrementStepStart;
+                    // Decrease the delay before the next hazard until it reaches spawnWaitLimit
+                    if (spawnWait > spawnWaitLimit)
+                    {
+                        spawnWait -= spawnWaitStepStart; // 0.05s for 1 speed unit
+                    }
+                }
+                else
+                {
+                    speedIncrement += speedIncrementStepEnd;
+                    fireRateIncrement += fireRateIncrementStepEnd * enemyFireRateIncrementCoef;
+                    enemyFireDelayDecrement += enemyFireDelayDecrementStepEnd;
+                    player.speed += speedIncrementStepEnd;
+                    player.fireRate -= fireRateIncrementStepEnd;
+                    if (spawnWait > spawnWaitLimit)
+                    {
+                        spawnWait -= spawnWaitStepEnd;
+                    }
                 }
             }
 
@@ -131,15 +177,21 @@ public class GameController : MonoBehaviour
                 mover = tempObject.GetComponent<Mover>();
                 mover.speed -= speedIncrement; // Hazard speed is negative for transform purposes
 
+                if (weapon = tempObject.GetComponent<WeaponController>())
+                {
+                    weapon.fireRate -= fireRateIncrement;
+                    weapon.delay -= enemyFireDelayDecrement;
+                }
+
                 yield return new WaitForSeconds(spawnWait);
             }
 
-            // Decrease the delay before the next wave every 3rd wave until it reaches 0
+            // Decrease the delay before the next wave every waveWaitDecrementsEveryNthWave-th wave until it reaches 0
             if (waveWait > 0.1f) // 0.1f is used to avoid comparison float to 0
             {
-                if (waveCount % 3 == 0)
+                if (waveCount % waveWaitDecrementsEveryNthWave == 0)
                 {
-                    waveWait -= 0.5f;                
+                    waveWait -= waveWaitDecrementStep;                
                 }
                 yield return new WaitForSeconds(waveWait);
             }
