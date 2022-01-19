@@ -21,11 +21,22 @@ public class PlayerController : MonoBehaviour
     public float fireRate;
 
     private float nextFire;
+
+    // Bolt speed increment
+    private Mover mover;
+    private GameObject tempObject;
+    private float shotSpeedIncrement;
+    public void ShotSpeedIncrement(float incrementStep)
+    {
+        shotSpeedIncrement += incrementStep;
+    }
     
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        // Shot speed Increment initialization
+        shotSpeedIncrement = 0;
     }
 
     void Update()
@@ -34,7 +45,13 @@ public class PlayerController : MonoBehaviour
         {
             nextFire = Time.time + fireRate;
             //  GameObject clone = 
-            Instantiate(shot, shotSpawn.position, shotSpawn.rotation); // as GameObject;
+            //Instantiate(shot, shotSpawn.position, shotSpawn.rotation); // as GameObject;
+            tempObject = Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+
+            // Player's shot speed increment
+            mover = tempObject.GetComponent<Mover>();
+            mover.speed += shotSpeedIncrement;
+
             audioSource.Play();
         }
     }

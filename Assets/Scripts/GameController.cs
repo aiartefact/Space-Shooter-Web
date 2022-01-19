@@ -58,6 +58,11 @@ public class GameController : MonoBehaviour
     public float enemyFireDelayDecrementStepStart; // Step for enemy fire delay decrement until Player speed reaches playerSpeedLimit
     public float enemyFireDelayDecrementStepEnd; // Step for enemy fire delay decrement after Player speed reaches playerSpeedLimit
 
+    // Shot speed increment
+    private float shotSpeedIncrement;
+    public float shotSpeedIncrementStepStart; // Step for shot speed increment until Player speed reaches playerSpeedLimit
+    public float shotSpeedIncrementStepEnd; // Step for shot speed increment after Player speed reaches playerSpeedLimit
+
     private void Start()
     {
         gameOver = false;
@@ -90,6 +95,8 @@ public class GameController : MonoBehaviour
         fireRateIncrement = 0;
         // enemyFireDelayDecrement initialization
         enemyFireDelayDecrement = 0;
+        // shotSpeedIncrement initialization
+        shotSpeedIncrement = 0;
 
         UpdateScore();
         StartCoroutine (SpawnWaves());
@@ -127,8 +134,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            // TODO: Increment the bolt speed for both player and enemies
-            // TODO: Intro with game description, rules and controls
+            // TODO: Increment the bolt speed for enemies
+            // TODO: Intro with game description, rules and controls (and warnings about high speed action, etc.)
             // TODO: Difficulty levels
             
             // waveCount increment
@@ -141,10 +148,13 @@ public class GameController : MonoBehaviour
                     speedIncrement += speedIncrementStepStart;
                     fireRateIncrement += fireRateIncrementStepStart * enemyFireRateIncrementCoef;
                     enemyFireDelayDecrement += enemyFireDelayDecrementStepStart;
+                    shotSpeedIncrement += shotSpeedIncrementStepStart;
                     // Player movement speed increment
                     player.speed += speedIncrementStepStart;
                     // Player fire rate increment
                     player.fireRate -= fireRateIncrementStepStart;
+                    // Player's shot speed increment
+                    player.ShotSpeedIncrement(shotSpeedIncrementStepStart);
                     // Decrease the delay before the next hazard until it reaches spawnWaitLimit
                     if (spawnWait > spawnWaitLimit)
                     {
@@ -156,8 +166,10 @@ public class GameController : MonoBehaviour
                     speedIncrement += speedIncrementStepEnd;
                     fireRateIncrement += fireRateIncrementStepEnd * enemyFireRateIncrementCoef;
                     enemyFireDelayDecrement += enemyFireDelayDecrementStepEnd;
+                    shotSpeedIncrement += shotSpeedIncrementStepEnd;
                     player.speed += speedIncrementStepEnd;
                     player.fireRate -= fireRateIncrementStepEnd;
+                    player.ShotSpeedIncrement(shotSpeedIncrementStepEnd);
                     if (spawnWait > spawnWaitLimit)
                     {
                         spawnWait -= spawnWaitStepEnd;
