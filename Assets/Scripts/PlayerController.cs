@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
             //Instantiate(shot, shotSpawn.position, shotSpawn.rotation); // as GameObject;
             tempObject = Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
 
-            // Player's shot speed increment
+            // Player shot speed increment
             mover = tempObject.GetComponent<Mover>();
             mover.speed += shotSpeedIncrement;
 

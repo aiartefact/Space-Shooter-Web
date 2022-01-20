@@ -134,7 +134,6 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            // TODO: Increment the bolt speed for enemies
             // TODO: Intro with game description, rules and controls (and warnings about high speed action, etc.)
             // TODO: Difficulty levels
             
@@ -153,7 +152,7 @@ public class GameController : MonoBehaviour
                     player.speed += speedIncrementStepStart;
                     // Player fire rate increment
                     player.fireRate -= fireRateIncrementStepStart;
-                    // Player's shot speed increment
+                    // Player shot speed increment
                     player.ShotSpeedIncrement(shotSpeedIncrementStepStart);
                     // Decrease the delay before the next hazard until it reaches spawnWaitLimit
                     if (spawnWait > spawnWaitLimit)
@@ -191,8 +190,11 @@ public class GameController : MonoBehaviour
 
                 if (weapon = tempObject.GetComponent<WeaponController>())
                 {
+                    // Enemy fire rate increment
                     weapon.fireRate -= fireRateIncrement;
                     weapon.delay -= enemyFireDelayDecrement;
+                    // Enemy shot speed increment
+                    weapon.ShotSpeedIncrement(shotSpeedIncrement);
                 }
 
                 yield return new WaitForSeconds(spawnWait);
