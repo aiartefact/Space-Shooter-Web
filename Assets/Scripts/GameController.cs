@@ -27,7 +27,6 @@ public class GameController : MonoBehaviour
     // Screen resolution change UI fix
     private int PrevScreenWidth = 1366;
     private int PrevScreenHeight = 768;
-    private Vector3 PrevScoreTextPos = new Vector3(398,768,0);
 
     // waveCount for waveWait change
     private int waveCount;
@@ -136,6 +135,7 @@ public class GameController : MonoBehaviour
         {
             // TODO: Intro with game description, rules and controls (and warnings about high speed action, etc.)
             // TODO: Difficulty levels
+            // TODO: Highscore (optional)
             
             // waveCount increment
             waveCount++;
