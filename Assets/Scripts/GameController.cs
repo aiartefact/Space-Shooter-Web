@@ -133,7 +133,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            // TODO: Intro with game description, rules and controls (and warnings about high speed action, etc.)
+            // TODO: Add pause to the game with sound pause (mute)
             // TODO: Difficulty levels
             // TODO: Highscore (optional)
             
