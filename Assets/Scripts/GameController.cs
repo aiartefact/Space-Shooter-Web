@@ -14,11 +14,11 @@ public class GameController : MonoBehaviour
     public float waveWait;
 
     public Text scoreText;
-    public Text restartText;
-    public Text gameOverText;
+    public Text messageText;
+    public Button restartButton;
+    public Button launchMenuButton;
 
     private bool gameOver;
-    private bool restart;
     private int score;
 
     // New Scene for the restart
@@ -65,9 +65,8 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         gameOver = false;
-        restart = false;
-        restartText.text = "";
-        gameOverText.text = "";
+        messageText.text = "";
+        ButtonsOff();
         score = 0;
         // Screen resolution change UI fix
         if (Screen.width != PrevScreenWidth)
@@ -115,16 +114,6 @@ public class GameController : MonoBehaviour
             PrevScreenWidth = Screen.width;
             PrevScreenHeight = Screen.height;
             scoreText.rectTransform.position = new Vector3(Screen.width * 0.295f, Screen.height, 0);
-        }
-        // Restart
-        if (restart)
-        {
-            if (Input.GetKeyDown (KeyCode.R))
-            {
-                scene = SceneManager.GetActiveScene();
-                SceneManager.LoadSceneAsync(scene.name);
-                //Application.LoadLevel(Application.loadedLevel);
-            }
         }
     } 
 
@@ -213,8 +202,6 @@ public class GameController : MonoBehaviour
 
             if (gameOver)
             {
-                restartText.text = "Press 'R' for Restart";
-                restart = true;
                 break;
             }
         }
@@ -233,7 +220,28 @@ public class GameController : MonoBehaviour
 
     public void GameOver ()
     {
-        gameOverText.text = "Game Over!";
+        messageText.text = "Game Over!";
+        ButtonsOn();
         gameOver = true;
+    }
+
+    private void ButtonsOff()
+    {
+        restartButton.gameObject.SetActive(false);
+        launchMenuButton.gameObject.SetActive(false);
+    }
+    private void ButtonsOn()
+    {
+        restartButton.gameObject.SetActive(true);
+        launchMenuButton.gameObject.SetActive(true);
+    }
+    public void RestartGame()
+    {
+        scene = SceneManager.GetActiveScene();
+        SceneManager.LoadSceneAsync(scene.name);
+    }
+    public void ReturnToLaunchMenu()
+    {
+        SceneManager.LoadSceneAsync("_Scenes/StartupMenu");
     }
 }
