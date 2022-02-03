@@ -26,6 +26,15 @@ public class StartupMenu : MonoBehaviour
 
     public GameObject player;
 
+    private void Start()
+    {
+        // If the game was paused in the previous scene then unpause it
+        if (PauseManager.pauseManager.gamePaused)
+        {
+            PauseManager.pauseManager.PauseGame();
+        }
+    }
+
     public void GameLaunch()
     {
         SceneManager.LoadSceneAsync("_Scenes/Main");

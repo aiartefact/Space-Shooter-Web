@@ -68,6 +68,11 @@ public class GameController : MonoBehaviour
         messageText.text = "";
         ButtonsOff();
         score = 0;
+        // If the game was paused in the previous scene then unpause it
+        if (PauseManager.pauseManager.gamePaused)
+        {
+            PauseManager.pauseManager.PauseGame();
+        }
         // Screen resolution change UI fix
         if (Screen.width != PrevScreenWidth)
         {
@@ -115,6 +120,13 @@ public class GameController : MonoBehaviour
             PrevScreenHeight = Screen.height;
             scoreText.rectTransform.position = new Vector3(Screen.width * 0.295f, Screen.height, 0);
         }
+
+        // Check for user input for pause if the game is not over
+        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.P)) && !gameOver)
+        {
+            PauseManager.pauseManager.PauseGame();
+            PauseMenuSwitch();
+        }
     } 
 
     IEnumerator SpawnWaves()
@@ -122,7 +134,6 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            // TODO: Add pause to the game with sound pause (mute)
             // TODO: Difficulty levels
             // TODO: Highscore (optional)
             
@@ -243,5 +254,20 @@ public class GameController : MonoBehaviour
     public void ReturnToLaunchMenu()
     {
         SceneManager.LoadSceneAsync("_Scenes/StartupMenu");
+    }
+
+    // Sets and unsets the Pause state
+    private void PauseMenuSwitch()
+    {
+        if (PauseManager.pauseManager.gamePaused)
+        {
+            messageText.text = "Game paused";
+            ButtonsOn();
+        }
+        else
+        {
+            messageText.text = "";
+            ButtonsOff();
+        }
     }
 }
