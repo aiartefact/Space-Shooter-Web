@@ -15,8 +15,11 @@ public class GameController : MonoBehaviour
 
     public Text scoreText;
     public Text messageText;
-    public Button restartButton;
-    public Button launchMenuButton;
+    public Button restartGameOverButton;
+    public Button launchMenuGameOverButton;
+    public Button continuePauseButton;
+    public Button restartPauseButton;
+    public Button launchMenuPauseButton;
 
     private bool gameOver;
     private int score;
@@ -66,7 +69,8 @@ public class GameController : MonoBehaviour
     {
         gameOver = false;
         messageText.text = "";
-        ButtonsOff();
+        ButtonsGameOverOff();
+        ButtonsPauseOff();
         score = 0;
         // If the game was paused in the previous scene then unpause it
         if (PauseManager.pauseManager.gamePaused)
@@ -124,8 +128,7 @@ public class GameController : MonoBehaviour
         // Check for user input for pause if the game is not over
         if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.P)) && !gameOver)
         {
-            PauseManager.pauseManager.PauseGame();
-            PauseMenuSwitch();
+            PauseGame();
         }
     } 
 
@@ -232,19 +235,31 @@ public class GameController : MonoBehaviour
     public void GameOver ()
     {
         messageText.text = "Game Over!";
-        ButtonsOn();
+        ButtonsGameOverOn();
         gameOver = true;
     }
 
-    private void ButtonsOff()
+    private void ButtonsGameOverOff()
     {
-        restartButton.gameObject.SetActive(false);
-        launchMenuButton.gameObject.SetActive(false);
+        restartGameOverButton.gameObject.SetActive(false);
+        launchMenuGameOverButton.gameObject.SetActive(false);
     }
-    private void ButtonsOn()
+    private void ButtonsGameOverOn()
     {
-        restartButton.gameObject.SetActive(true);
-        launchMenuButton.gameObject.SetActive(true);
+        restartGameOverButton.gameObject.SetActive(true);
+        launchMenuGameOverButton.gameObject.SetActive(true);
+    }
+    private void ButtonsPauseOff()
+    {
+        restartPauseButton.gameObject.SetActive(false);
+        launchMenuPauseButton.gameObject.SetActive(false);
+        continuePauseButton.gameObject.SetActive(false);
+    }
+    private void ButtonsPauseOn()
+    {
+        restartPauseButton.gameObject.SetActive(true);
+        launchMenuPauseButton.gameObject.SetActive(true);
+        continuePauseButton.gameObject.SetActive(true);
     }
     public void RestartGame()
     {
@@ -262,12 +277,17 @@ public class GameController : MonoBehaviour
         if (PauseManager.pauseManager.gamePaused)
         {
             messageText.text = "Game paused";
-            ButtonsOn();
+            ButtonsPauseOn();
         }
         else
         {
             messageText.text = "";
-            ButtonsOff();
+            ButtonsPauseOff();
         }
+    }
+    public void PauseGame()
+    {
+        PauseManager.pauseManager.PauseGame();
+        PauseMenuSwitch();
     }
 }
