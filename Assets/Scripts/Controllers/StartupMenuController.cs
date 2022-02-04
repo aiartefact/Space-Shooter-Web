@@ -14,10 +14,15 @@ public class StartupMenuController : MonoBehaviour
     public Text rulesText;
     public Text controlsText;
     public Text aboutText;
+    public Text selectDifficultyText;
 
     public Button startButton;
     public Button aboutButton;
     public Button backButton;
+    public Button easyDifficultyButton;
+    public Button mediumDifficultyButton;
+    public Button hardDifficultyButton;
+    public Button veryHardDifficultyButton;
 
     public RawImage descriptionBackgroundImage;
     public RawImage rulesBackgroundImage;
@@ -35,8 +40,9 @@ public class StartupMenuController : MonoBehaviour
         }
     }
 
-    public void GameLaunch()
+    public void GameLaunch(int difficultyLevel)
     {
+        DifficultyManager.difficultyManager.difficultyLevel = difficultyLevel;
         SceneManager.LoadSceneAsync("_Scenes/Main");
     }
 
@@ -48,12 +54,17 @@ public class StartupMenuController : MonoBehaviour
     public void Back()
     {
         AboutMenuOff();
+        DifficultyMenuOff();
         StartupMenuOn();
+    }
+    public void SelectDifficulty()
+    {
+        StartupMenuOff();
+        DifficultyMenuOn();
     }
 
     private void StartupMenuOn()
     {
-        player.SetActive(true);
         titleText.gameObject.SetActive(true);
         subTitleText.gameObject.SetActive(true);
         warningText.gameObject.SetActive(true);
@@ -63,7 +74,6 @@ public class StartupMenuController : MonoBehaviour
     }
     private void StartupMenuOff()
     {
-        player.SetActive(false);
         titleText.gameObject.SetActive(false);
         subTitleText.gameObject.SetActive(false);
         warningText.gameObject.SetActive(false);
@@ -73,6 +83,7 @@ public class StartupMenuController : MonoBehaviour
     }
     private void AboutMenuOn()
     {
+        player.SetActive(false);
         descriptionBackgroundImage.gameObject.SetActive(true);
         descriptionText.gameObject.SetActive(true);
         rulesBackgroundImage.gameObject.SetActive(true);
@@ -85,6 +96,7 @@ public class StartupMenuController : MonoBehaviour
     }
     private void AboutMenuOff()
     {
+        player.SetActive(true);
         descriptionBackgroundImage.gameObject.SetActive(false);
         descriptionText.gameObject.SetActive(false);
         rulesBackgroundImage.gameObject.SetActive(false);
@@ -93,6 +105,24 @@ public class StartupMenuController : MonoBehaviour
         controlsText.gameObject.SetActive(false);
         aboutBackgroundImage.gameObject.SetActive(false);
         aboutText.gameObject.SetActive(false);
+        backButton.gameObject.SetActive(false);
+    }
+    private void DifficultyMenuOn()
+    {
+        selectDifficultyText.gameObject.SetActive(true);
+        easyDifficultyButton.gameObject.SetActive(true);
+        mediumDifficultyButton.gameObject.SetActive(true);
+        hardDifficultyButton.gameObject.SetActive(true);
+        veryHardDifficultyButton.gameObject.SetActive(true);
+        backButton.gameObject.SetActive(true);
+    }
+    private void DifficultyMenuOff()
+    {
+        selectDifficultyText.gameObject.SetActive(false);
+        easyDifficultyButton.gameObject.SetActive(false);
+        mediumDifficultyButton.gameObject.SetActive(false);
+        hardDifficultyButton.gameObject.SetActive(false);
+        veryHardDifficultyButton.gameObject.SetActive(false);
         backButton.gameObject.SetActive(false);
     }
 }

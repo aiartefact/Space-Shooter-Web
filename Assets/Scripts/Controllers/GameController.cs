@@ -65,8 +65,34 @@ public class GameController : MonoBehaviour
     public float shotSpeedIncrementStepStart; // Step for shot speed increment until Player speed reaches playerSpeedLimit
     public float shotSpeedIncrementStepEnd; // Step for shot speed increment after Player speed reaches playerSpeedLimit
 
+    // Param arrays for difficulty levels (0th element - easy, 3rd - very hard)
+    private int[] speedIncrementsEveryNthWaveArr =          new int[4]      {          4,          4,          3,          2 };
+    private int[] waveWaitDecrementsEveryNthWaveArr =       new int[4]      {          3,          3,          2,          1 };
+    /* Player speed start:                                                  {         10,         10,         10,         10 } */
+    private float[] playerSpeedLimitArr =                   new float[4]    {      13.2f,         14,         15,         15 };
+    private float[] speedIncrementStepStartArr =            new float[4]    {       0.4f,       0.5f,       0.5f,       0.5f };
+    private float[] speedIncrementStepEndArr =              new float[4]    {       0.1f,      0.15f,       0.2f,       0.2f };
+    private float[] playerSpeedStopLimitArr =               new float[4]    {         15,      16.1f,         17,         18 };
+    private float[] spawnWaitLimitArr =                     new float[4]    {     0.361f,     0.311f,     0.281f,     0.251f };
+    /* Player fire rate start:                                              {      0.25f,      0.25f,      0.25f,      0.25f }
+       Player fire rate medium:                                             {      0.23f,     0.225f,   0.21875f,   0.21875f }
+       Player fire rate end:                                                {   0.21875f,  0.211875f,   0.20625f,       0.2f } */
+    private float[] fireRateIncrementStepStartArr =         new float[4]    {    0.0025f,  0.003125f,  0.003125f,  0.003125f };
+    private float[] fireRateIncrementStepEndArr =           new float[4]    {  0.000625f, 0.0009375f,   0.00125f,   0.00125f };
+    /* Enemy fire delay start:                                              {       0.5f,       0.5f,       0.5f,       0.5f }
+       Enemy fire delay medium:                                             {      0.36f,     0.325f,   0.28125f,   0.28125f }
+       Enemy fire delay end:                                                {   0.28125f,  0.233125f,   0.19375f,      0.15f } */
+    private float[] enemyFireDelayDecrementStepStartArr =   new float[4]    {    0.0175f,  0.021875f,  0.021875f,  0.021875f };
+    private float[] enemyFireDelayDecrementStepEndArr =     new float[4]    {  0.004375f, 0.0065625f,   0.00875f,   0.00875f };
+    /* Bolt speed start:                                                    {         20,         20,         20,         20 }
+       Bolt speed medium:                                                   {      21.2f,      21.5f,    21.875f,    21.875f }
+       Bolt speed end:                                                      {    21.875f,   22.2875f,    22.625f,         23 } */
+    private float[] shotSpeedIncrementStepStartArr =        new float[4]    {      0.15f,    0.1875f,    0.1875f,    0.1875f };
+    private float[] shotSpeedIncrementStepEndArr =          new float[4]    {    0.0375f,   0.05625f,     0.075f,     0.075f };
+
     private void Start()
     {
+        // UI initialization
         gameOver = false;
         messageText.text = "";
         ButtonsGameOverOff();
@@ -91,18 +117,14 @@ public class GameController : MonoBehaviour
             PrevScreenHeight = Screen.height;
             scoreText.rectTransform.position = new Vector3(Screen.width * 0.295f, Screen.height, 0);
         }
-        // waveCount initialization
+        // Difficulty params initialization 
+        SetGameDifficulty(DifficultyManager.difficultyManager.difficultyLevel);
         waveCount = 0;
-        // speedIncrement initialization
         speedIncrement = 0;
-        // spawnWaitStep initialization
         spawnWaitStepStart = speedIncrementStepStart * 0.05f;
         spawnWaitStepEnd = speedIncrementStepEnd * 0.05f;
-        // fireRateIncrement initialization
         fireRateIncrement = 0;
-        // enemyFireDelayDecrement initialization
         enemyFireDelayDecrement = 0;
-        // shotSpeedIncrement initialization
         shotSpeedIncrement = 0;
 
         UpdateScore();
@@ -137,7 +159,6 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            // TODO: Difficulty levels
             // TODO: Highscore (optional)
             
             // waveCount increment
@@ -289,5 +310,21 @@ public class GameController : MonoBehaviour
     {
         PauseManager.pauseManager.PauseGame();
         PauseMenuSwitch();
+    }
+    private void SetGameDifficulty(int difficultyLevel)
+    {
+        speedIncrementsEveryNthWave = speedIncrementsEveryNthWaveArr[difficultyLevel];
+        waveWaitDecrementsEveryNthWave = waveWaitDecrementsEveryNthWaveArr[difficultyLevel];
+        playerSpeedLimit = playerSpeedLimitArr[difficultyLevel];
+        speedIncrementStepStart = speedIncrementStepStartArr[difficultyLevel];
+        speedIncrementStepEnd = speedIncrementStepEndArr[difficultyLevel];
+        playerSpeedStopLimit = playerSpeedStopLimitArr[difficultyLevel];
+        spawnWaitLimit = spawnWaitLimitArr[difficultyLevel];
+        fireRateIncrementStepStart = fireRateIncrementStepStartArr[difficultyLevel];
+        fireRateIncrementStepEnd = fireRateIncrementStepEndArr[difficultyLevel];
+        enemyFireDelayDecrementStepStart = enemyFireDelayDecrementStepStartArr[difficultyLevel];
+        enemyFireDelayDecrementStepEnd = enemyFireDelayDecrementStepEndArr[difficultyLevel];
+        shotSpeedIncrementStepStart = shotSpeedIncrementStepStartArr[difficultyLevel];
+        shotSpeedIncrementStepEnd = shotSpeedIncrementStepEndArr[difficultyLevel];
     }
 }
