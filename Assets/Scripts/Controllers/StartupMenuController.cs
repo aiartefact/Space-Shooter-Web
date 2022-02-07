@@ -18,11 +18,12 @@ public class StartupMenuController : MonoBehaviour
 
     public Button startButton;
     public Button aboutButton;
-    public Button backButton;
+    public Button backFromAboutButton;
     public Button easyDifficultyButton;
     public Button mediumDifficultyButton;
     public Button hardDifficultyButton;
     public Button veryHardDifficultyButton;
+    public Button backFromSelectDifficultyButton;
 
     public RawImage descriptionBackgroundImage;
     public RawImage rulesBackgroundImage;
@@ -51,16 +52,20 @@ public class StartupMenuController : MonoBehaviour
         StartupMenuOff();
         AboutMenuOn();
     }
-    public void Back()
+    public void BackFromAbout()
     {
         AboutMenuOff();
-        DifficultyMenuOff();
         StartupMenuOn();
     }
     public void SelectDifficulty()
     {
         StartupMenuOff();
         DifficultyMenuOn();
+    }
+    public void BackFromSelectDifficulty()
+    {
+        DifficultyMenuOff();
+        StartupMenuOn();
     }
 
     private void StartupMenuOn()
@@ -92,7 +97,7 @@ public class StartupMenuController : MonoBehaviour
         controlsText.gameObject.SetActive(true);
         aboutBackgroundImage.gameObject.SetActive(true);
         aboutText.gameObject.SetActive(true);
-        backButton.gameObject.SetActive(true);
+        backFromAboutButton.gameObject.SetActive(true);
     }
     private void AboutMenuOff()
     {
@@ -105,7 +110,7 @@ public class StartupMenuController : MonoBehaviour
         controlsText.gameObject.SetActive(false);
         aboutBackgroundImage.gameObject.SetActive(false);
         aboutText.gameObject.SetActive(false);
-        backButton.gameObject.SetActive(false);
+        backFromAboutButton.gameObject.SetActive(false);
     }
     private void DifficultyMenuOn()
     {
@@ -114,7 +119,7 @@ public class StartupMenuController : MonoBehaviour
         mediumDifficultyButton.gameObject.SetActive(true);
         hardDifficultyButton.gameObject.SetActive(true);
         veryHardDifficultyButton.gameObject.SetActive(true);
-        backButton.gameObject.SetActive(true);
+        backFromSelectDifficultyButton.gameObject.SetActive(true);
     }
     private void DifficultyMenuOff()
     {
@@ -123,6 +128,6 @@ public class StartupMenuController : MonoBehaviour
         mediumDifficultyButton.gameObject.SetActive(false);
         hardDifficultyButton.gameObject.SetActive(false);
         veryHardDifficultyButton.gameObject.SetActive(false);
-        backButton.gameObject.SetActive(false);
+        backFromSelectDifficultyButton.gameObject.SetActive(false);
     }
 }
