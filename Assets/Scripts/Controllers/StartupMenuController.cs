@@ -15,6 +15,8 @@ public class StartupMenuController : MonoBehaviour
     public Text controlsText;
     public Text aboutText;
     public Text selectDifficultyText;
+    public Text selectHighscoreText;
+    public Text scoreText;
 
     public Button startButton;
     public Button aboutButton;
@@ -24,6 +26,13 @@ public class StartupMenuController : MonoBehaviour
     public Button hardDifficultyButton;
     public Button veryHardDifficultyButton;
     public Button backFromSelectDifficultyButton;
+    public Button highscoreButton;
+    public Button easyHighscoreButton;
+    public Button mediumHighscoreButton;
+    public Button hardHighscoreButton;
+    public Button veryHardHighscoreButton;
+    public Button backFromHighscoreButton;
+    public Button backFromScoreButton;
 
     public RawImage descriptionBackgroundImage;
     public RawImage rulesBackgroundImage;
@@ -67,6 +76,26 @@ public class StartupMenuController : MonoBehaviour
         DifficultyMenuOff();
         StartupMenuOn();
     }
+    public void Highscore()
+    {
+        StartupMenuOff();
+        HighscoreMenuOn();
+    }
+    public void BackFromHighscore()
+    {
+        HighscoreMenuOff();
+        StartupMenuOn();        
+    }
+    public void LoadScore(string difficulty)
+    {
+        HighscoreMenuOff();
+
+    }
+    public void BackFromScore()
+    {
+
+        HighscoreMenuOn();
+    }
 
     private void StartupMenuOn()
     {
@@ -75,6 +104,7 @@ public class StartupMenuController : MonoBehaviour
         warningText.gameObject.SetActive(true);
         responsibilityText.gameObject.SetActive(true);
         startButton.gameObject.SetActive(true);
+        highscoreButton.gameObject.SetActive(true);
         aboutButton.gameObject.SetActive(true);
     }
     private void StartupMenuOff()
@@ -84,6 +114,7 @@ public class StartupMenuController : MonoBehaviour
         warningText.gameObject.SetActive(false);
         responsibilityText.gameObject.SetActive(false);
         startButton.gameObject.SetActive(false);
+        highscoreButton.gameObject.SetActive(false);
         aboutButton.gameObject.SetActive(false);
     }
     private void AboutMenuOn()
@@ -129,5 +160,28 @@ public class StartupMenuController : MonoBehaviour
         hardDifficultyButton.gameObject.SetActive(false);
         veryHardDifficultyButton.gameObject.SetActive(false);
         backFromSelectDifficultyButton.gameObject.SetActive(false);
+    }
+    private void HighscoreMenuOn()
+    {
+        selectHighscoreText.gameObject.SetActive(true);
+        easyHighscoreButton.gameObject.SetActive(true);
+        mediumHighscoreButton.gameObject.SetActive(true);
+        hardHighscoreButton.gameObject.SetActive(true);
+        veryHardHighscoreButton.gameObject.SetActive(true);
+        backFromHighscoreButton.gameObject.SetActive(true);
+    }
+    private void HighscoreMenuOff()
+    {
+        selectHighscoreText.gameObject.SetActive(false);
+        easyHighscoreButton.gameObject.SetActive(false);
+        mediumHighscoreButton.gameObject.SetActive(false);
+        hardHighscoreButton.gameObject.SetActive(false);
+        veryHardHighscoreButton.gameObject.SetActive(false);
+        backFromHighscoreButton.gameObject.SetActive(false);
+    }
+    private void ScoreMenuOn()
+    {
+        scoreText.gameObject.SetActive(true);        
+        backFromScoreButton.gameObject.SetActive(true);
     }
 }
