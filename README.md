@@ -20,7 +20,7 @@ The rules are simple:
 - Use E or P for pause / unpause.
 
 ## About
-Space Shooter (Web Edition) created by aiartefact for learning and demonstration purposes and based on the "Space Shooter Tutorial \[LEGACY\]" by Unity Technologies Inc. 
-All rights belong to their respective owners.
-Unity Technologies Inc. ©
+Space Shooter (Web Edition) created by aiartefact for learning and demonstration purposes and based on the "Space Shooter Tutorial \[LEGACY\]" by Unity Technologies Inc. <br>
+All rights belong to their respective owners. <br>
+Unity Technologies Inc. © <br>
 aiartefact ©
